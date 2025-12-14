@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MatchRoom – Find your roomies</title>
+
+    <meta name="description" content="MatchRoom ayuda a estudiantes extranjeros a encontrar roomies compatibles según intereses, estilo de vida y presupuesto. No es para encontrar piso, sino compañero de piso.">
+
+    <!-- Fuentes similares al estilo del logo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #b93849;        /* rojo del logo */
+            --primary-dark: #8f2535;
+            --bg: #f7efe2;             /* beige del fondo */
+            --text-main: #2c2522;
+            --text-soft: #6b5a52;
+            --card-bg: #fdf7ee;
+            --border-soft: #d7c4b0;
+            --radius-lg: 18px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Manrope", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* NAV */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(16px);
+            background: rgba(247, 239, 226, 0.9);
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .nav {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-img {
+            height: 46px;
+            width: auto;
+            border-radius: 12px;
+        }
+
+        .nav-title {
+            font-family: "Playfair Display", serif;
+            font-size: 1.25rem;
+            letter-spacing: 0.03em;
+            color: var(--primary);
+        }
+
+        .nav-subtitle {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-soft);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.4rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+        }
+
+        .nav-links a {
+            opacity: 0.75;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        .nav-cta {
+            padding: 0.6rem 1.4rem;
+            border-radius: 999px;
+            border: 1px solid var(--primary);
+            background: var(--primary);
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        .nav-cta:hover {
+            background: var(--primary-dark);
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.8rem 1.5rem 2.5rem;
+        }
+
+        /* HERO */
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+            gap: 2.5rem;
+            align-items: center;
+            padding: 1.5rem 0 2rem;
+        }
+
+        .hero-logo-block {
+            background: var(--card-bg);
+            border-radius: 26px;
+            padding: 1.5rem 1.8rem;
+            border: 1px solid var(--border-soft);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-logo-block::before,
+        .hero-logo-block::after {
+            content: "";
+            position: absolute;
+            border: 2px solid var(--primary);
+            border-radius: 18px;
+            width: 110px;
+            height: 110px;
+            opacity: 0.35;
+        }
+
+        .hero-logo-block::before {
+            top: -35px;
+            left: -20px;
+        }
+
+        .hero-logo-block::after {
+            bottom: -35px;
+            right: -20px;
+        }
+
+        .hero-logo-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+
+        .hero-logo-inner img {
+            max-width: 260px;
+            height: auto;
+            border-radius: 14px;
+        }
+
+        .hero-tagline {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--text-soft);
+            display: flex;
+            gap: 0.7rem;
+        }
+
+        .hero-tagline span:nth-child(2) {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .hero-right h1 {
+            font-family: "Playfair Display", serif;
+            font-size: clamp(2.1rem, 3vw, 2.6rem);
+            line-height: 1.12;
+            margin-bottom: 0.9rem;
+            color: var(--primary);
+        }
+
+        .hero-right h1 span {
+            color: var(--text-main);
+        }
+
+        .hero-right p {
+            font-size: 0.96rem;
+            color: var(--text-soft);
+            margin-bottom: 1.2rem;
+        }
+
+        .hero-cta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            align-items: center;
+            margin-bottom: 0.7rem;
+        }
+
+        .btn-primary {
+            padding: 0.8rem 1.4rem;
+            border-radius: 999px;
+            border: none;
+            background: var(--primary);
+            color: #fff;
+            font-size: 0.86rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-ghost {
+            padding: 0.8rem 1.2rem;
+            border-radius: 999px;
+            border: 1px solid var(--border-soft);
+            background: transparent;
+            font-size: 0.84rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            cursor: pointer;
+        }
+
+        .hero-mini-info {
+            font-size: 0.78rem;
+            color: var(--text-soft);
+        }
+
+        .hero-card {
+            margin-top: 1.3rem;
+            border-radius: 18px;
+            border: 1px solid var(--border-soft);
+            padding: 1rem 1.1rem;
+            background: rgba(253,247,238,0.9);
+            font-size: 0.8rem;
+        }
+
+        .hero-card strong {
+            font-weight: 600;
+        }
+
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.6rem;
+        }
+
+        .pill {
+            border-radius: 999px;
+            border: 1px solid var(--primary);
+            padding: 0.25rem 0.7rem;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        /* SECCIONES GENERALES */
+        section {
+            margin-top: 2.7rem;
+        }
+
+        .section-title {
+            font-family: "Playfair Display", serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.88rem;
+            color: var(--text-soft);
+            margin-bottom: 1.4rem;
+        }
+
+        /* CÓMO FUNCIONA */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .step {
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-soft);
+            padding: 1.05rem 1rem;
+            background: rgba(253,247,238,0.8);
+            font-size: 0.88rem;
+        }
+
+        .step-number {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .step h3 {
+            font-size: 0.98rem;
+            margin-bottom: 0.25rem;
+        }
+
+        /* BENEFICIOS */
+        .benefits {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 1.6rem;
+        }
+
+        .benefits-list {
+            display: grid;
+            gap: 0.9rem;
+            font-size: 0.9rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            gap: 0.7rem;
+        }
+
+        .benefit-icon {
+            font-size: 1.1rem;
+            margin-top: 0.15rem;
+        }
+
+        .card-soft {
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-soft);
+            padding: 1.1rem;
+            background: rgba(253,247,238,0.9);
+            font-size: 0.86rem;
+        }
+
+        .card-soft h3 {
+            margin-bottom: 0.6rem;
+            font-size: 0.98rem;
+        }
+
+        /* FORMULARIO / GRID GENERAL */
+        .form-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+            gap: 1.7rem;
+            align-items: flex-start;
+        }
+
+        form {
+            border-radius: 20px;
+            border: 1px solid var(--border-soft);
+            padding: 1.3rem;
+            background: #fdf7ee;
+            font-size: 0.88rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.8rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            margin-bottom: 0.2rem;
+            color: var(--text-soft);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.55rem 0.6rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-soft);
+            background: #fdf7ee;
+            font: inherit;
+            resize: vertical;
+        }
+
+        textarea {
+            min-height: 80px;
+        }
+
+        .form-note {
+            font-size: 0.76rem;
+            color: var(--text-soft);
+            margin-top: 0.5rem;
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding: 1.7rem 1.5rem 1.1rem;
+            border-top: 1px solid var(--border-soft);
+            font-size: 0.78rem;
+            color: var(--text-soft);
+        }
+
+        footer .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            justify-content: space-between;
+        }
+
+        /* FUNCIONES PRINCIPALES (overview) */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+        .feature-card {
+            background: #fdf7ee;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-soft);
+            padding: 1rem;
+            font-size: 0.86rem;
+        }
+        .feature-card h3 {
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+            color: var(--primary);
+        }
+
+        /* DEMO FUNCIONES (perfil / test / filtros / chat / reseñas) */
+        .demo-grid {
+            display: grid;
+            grid-template-columns: minmax(0,1.1fr) minmax(0,1fr);
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+        .demo-card {
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-soft);
+            background: #fdf7ee;
+            padding: 1rem;
+            font-size: 0.86rem;
+            margin-bottom: 1rem;
+        }
+        .demo-card h3 {
+            font-size: 0.98rem;
+            margin-bottom: 0.4rem;
+        }
+
+        /* Perfil preview */
+        .perfil-preview {
+            display: flex;
+            gap: 0.8rem;
+            align-items: flex-start;
+            margin-top: 0.7rem;
+        }
+        .perfil-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 999px;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .perfil-data-main {
+            font-size: 0.9rem;
+        }
+        .perfil-verified {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #1b7a3f;
+            margin-top: 0.15rem;
+        }
+
+        /* Test compatibilidad */
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(2,minmax(0,1fr));
+            gap: 0.7rem;
+        }
+        .compat-result {
+            margin-top: 0.6rem;
+            font-weight: 600;
+            font-size: 0.84rem;
+        }
+
+        /* Roomies + filtros + favoritos */
+        .filters-row {
+            display: grid;
+            grid-template-columns: repeat(3,minmax(0,1fr));
+            gap: 0.7rem;
+            margin-bottom: 0.8rem;
+        }
+        .roomies-grid {
+            display: grid;
+            grid-template-columns: minmax(0,1fr);
+            gap: 0.7rem;
+        }
+        .roomie-card {
+            border-radius: 14px;
+            border: 1px solid var(--border-soft);
+            background: #fff8f1;
+            padding: 0.7rem 0.8rem;
+            position: relative;
+        }
+        .roomie-top {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.3rem;
+        }
+        .roomie-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 999px;
+            background: var(--primary);
+            color:#fff;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:0.8rem;
+            font-weight:600;
+        }
+        .roomie-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .roomie-meta {
+            font-size: 0.78rem;
+            color: var(--text-soft);
+        }
+        .match-pill {
+            font-size: 0.78rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 999px;
+            border: 1px solid var(--primary);
+            margin-left: auto;
+        }
+        .fav-toggle {
+            position:absolute;
+            top:6px;
+            right:8px;
+            cursor:pointer;
+            font-size:1rem;
+        }
+        .fav-toggle.favorited {
+            color:#f39c12;
+        }
+        .alert-soft {
+            font-size: 0.78rem;
+            background: #e7ffe9;
+            border: 1px solid #b8e4be;
+            padding: 0.45rem 0.6rem;
+            border-radius: 999px;
+            margin-bottom: 0.7rem;
+            display: none;
+        }
+
+        /* Chat demo */
+        .chat-box {
+            border-radius: 16px;
+            border: 1px solid var(--border-soft);
+            background:#fdf7ee;
+            padding:0.6rem;
+            display:flex;
+            flex-direction:column;
+            height:210px;
+            font-size:0.8rem;
+        }
+        .chat-messages {
+            flex:1;
+            overflow-y:auto;
+            margin-bottom:0.5rem;
+        }
+        .chat-msg {
+            max-width:75%;
+            padding:0.35rem 0.55rem;
+            border-radius:10px;
+            margin-bottom:0.35rem;
+        }
+        .chat-msg.me {
+            margin-left:auto;
+            background:var(--primary);
+            color:#fff;
+        }
+        .chat-msg.them {
+            background:#fff;
+            border:1px solid var(--border-soft);
+        }
+        .chat-input-row {
+            display:flex;
+            gap:0.4rem;
+        }
+        .chat-input-row input {
+            flex:1;
+            margin:0;
+        }
+        .btn-small {
+            padding:0.4rem 0.7rem;
+            font-size:0.74rem;
+            letter-spacing:0.08em;
+        }
+
+        /* Reseñas */
+        .rating-stars span {
+            cursor:pointer;
+            font-size:1rem;
+            margin-right:2px;
+        }
+        .rating-stars span.active {
+            color:#f39c12;
+        }
+        .reviews-list {
+            margin-top:0.5rem;
+            max-height:150px;
+            overflow-y:auto;
+            font-size:0.82rem;
+        }
+        .review-item {
+            border-bottom:1px solid rgba(0,0,0,0.05);
+            padding:0.35rem 0;
+        }
+        .review-item strong {
+            font-size:0.83rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            .hero-logo-block {
+                order: -1;
+            }
+            .steps {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            .benefits {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            .form-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            .nav-links {
+                display: none;
+            }
+            .features-grid {
+                grid-template-columns: minmax(0,1fr);
+            }
+            .demo-grid {
+                grid-template-columns: minmax(0,1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            main {
+                padding-inline: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="nav">
+        <div class="nav-left">
+            <img src="logo-matchroom.jpg" alt="Logo MatchRoom" class="logo-img" />
+            <div>
+                <div class="nav-title">MatchRoom</div>
+                <div class="nav-subtitle">Find your roomies · Since 2025</div>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="#como-funciona">Cómo funciona</a>
+            <a href="#beneficios">Por qué</a>
+            <a href="#funciones">Funciones</a>
+            <a href="#empezar">Empezar</a>
+        </div>
+        <a href="#empezar" class="nav-cta">Create profile</a>
+    </nav>
+</header>
+
+<main>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-logo-block">
+            <div class="hero-logo-inner">
+                <img src="logo-matchroom.jpg" alt="MatchRoom logo principal" />
+                <div class="hero-tagline">
+                    <span>Find your roomies</span>
+                    <span>Since 2025</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <h1><span>La forma inteligente</span><br/>de encontrar roomie.</h1>
+            <p>
+                MatchRoom es una plataforma para estudiantes extranjeros que quieren
+                encontrar <strong>roomies compatibles</strong> en intereses, estilo de vida y presupuesto.
+                Aquí no buscas piso, primero encuentras a la persona con la que te gustaría compartirlo.
+            </p>
+
+            <div class="hero-cta">
+                <button class="btn-primary" onclick="document.getElementById('empezar').scrollIntoView({behavior:'smooth'})">
+                    Empezar ahora
+                </button>
+                <button class="btn-ghost" onclick="document.getElementById('como-funciona').scrollIntoView({behavior:'smooth'})">
+                    Ver cómo funciona
+                </button>
+            </div>
+
+            <p class="hero-mini-info">
+                MatchRoom se centra en <strong>compatibilidad real</strong>: horarios, hobbies, nivel de ruido,
+                situación económica y expectativas de convivencia.
+            </p>
+
+            <div class="hero-card">
+                <strong>Qué verás en tus matches:</strong>
+                <div class="hero-tags">
+                    <span class="pill">Misma ciudad / uni</span>
+                    <span class="pill">Presupuesto similar</span>
+                    <span class="pill">Fiestero · Tranquilo</span>
+                    <span class="pill">Hobbies en común</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CÓMO FUNCIONA -->
+    <section id="como-funciona">
+        <h2 class="section-title">Cómo funciona MatchRoom</h2>
+        <p class="section-subtitle">Una estructura simple, pensada para quienes llegan a otro país por primera vez.</p>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">Paso 1</div>
+                <h3>Crea tu perfil de roomie</h3>
+                <p>
+                    Cuenta de qué país vienes, a qué ciudad y universidad vas, tu presupuesto,
+                    horarios, si trabajas, si fumas y tu estilo de convivencia: fiestero, tranquilo,
+                    organizado, etc.
+                </p>
+            </div>
+            <div class="step">
+                <div class="step-number">Paso 2</div>
+                <h3>Filtra por compatibilidad</h3>
+                <p>
+                    Filtra perfiles por rango de precio, estilo de vida, idioma, hobbies y
+                    situación económica. MatchRoom te muestra a quienes viven algo parecido a ti.
+                </p>
+            </div>
+            <div class="step">
+                <div class="step-number">Paso 3</div>
+                <h3>Conecta y decide juntos</h3>
+                <p>
+                    Habla con tus posibles roomies antes de buscar piso. Si hay buena vibra, pueden
+                    buscar departamento juntos y repartir gastos desde el principio con claridad.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- BENEFICIOS -->
+    <section id="beneficios">
+        <h2 class="section-title">Por qué primero roomie y luego piso</h2>
+        <p class="section-subtitle">El piso se cambia; la convivencia se vive todos los días.</p>
+
+        <div class="benefits">
+            <div class="benefits-list">
+                <div class="benefit-item">
+                    <div class="benefit-icon">💬</div>
+                    <div>
+                        <strong>Habla de todo antes de firmar.</strong><br/>
+                        Acuerden desde el inicio temas clave: visitas, fiestas, limpieza,
+                        estudio, compartir comida y espacios comunes.
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">💶</div>
+                    <div>
+                        <strong>Presupuesto alineado.</strong><br/>
+                        MatchRoom prioriza que el nivel económico sea similar, para que nadie
+                        se sienta forzado a pagar más de lo que puede o quiere.
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🌍</div>
+                    <div>
+                        <strong>Todos son estudiantes fuera de casa.</strong><br/>
+                        Personas que entienden lo que implica vivir en otro país:
+                        papeleo, adaptación, aprender el idioma y construir tu círculo social.
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🧩</div>
+                    <div>
+                        <strong>Encajar como piezas de puzzle.</strong><br/>
+                        No se trata de que sean iguales, sino de que encajen en las cosas
+                        importantes: respeto, comunicación y objetivos de vida.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-soft">
+                <h3>Claridad de convivencia desde el día uno</h3>
+                <p>
+                    Los perfiles se centran en convivencia, no en fotos de pisos:
+                    qué esperas de un roomie, qué estás dispuesto a ofrecer y qué
+                    límites tienes claros.
+                </p>
+                <p style="margin-top:0.7rem;">
+                    Antes de decir “sí” a vivir con alguien, ambos pueden revisar:
+                </p>
+                <ul style="margin-top:0.4rem; padding-left:1.1rem;">
+                    <li>Reglas básicas (ruido, visitas, fiestas)</li>
+                    <li>Reparto de gastos y servicios</li>
+                    <li>Preferencias (mascotas, fumar, estudio, trabajo)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- FUNCIONES PRINCIPALES (texto) -->
+    <section id="funciones">
+        <h2 class="section-title">Funciones principales de MatchRoom</h2>
+        <p class="section-subtitle">
+            
+        </p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>Perfil completo y verificado</h3>
+                <p>Información de origen, ciudad, universidad, presupuesto, hábitos y un estado de verificación.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Test de compatibilidad</h3>
+                <p>Pequeño cuestionario que genera un porcentaje de match en función de tus hábitos y preferencias.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Filtros avanzados y sistema de match</h3>
+                <p>Filtra por ciudad, presupuesto y estilo de convivencia, y descubre roomies compatibles.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Chat y videollamadas</h3>
+                <p>Comunicación dentro de la app antes de tomar decisiones sobre con quién vivir.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Favoritos y alertas</h3>
+                <p>Marca perfiles que te gusten y recíbelos en una sección de favoritos.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Reseñas y reputación</h3>
+                <p>Opiniones y puntuaciones sobre la convivencia para construir confianza.</p>
+            </div>
+        </div>
+    </section>
+
+    
+
+
+    <!-- DEMO INTERACTIVA: PERFIL + TEST + MATCH + CHAT + RESEÑAS -->
+    <section id="empezar">
+        
+        <div class="demo-card">
+            <h3>Cuenta </h3>
+            <div class="form-row">
+            <div>
+                <label>Email</label>
+                <input id="auth-email" type="email" placeholder="tu@email.com">
+            </div>
+            <div>
+                <label>Password</label>
+                <input id="auth-pass" type="password" placeholder="••••••••">
+            </div>
+            </div>
+        
+            <div style="display:flex; gap:0.4rem; margin-top:0.6rem; flex-wrap:wrap;">
+            <button type="button" class="btn-primary btn-small" id="btn-register">Register</button>
+                <button type="button" class="btn-ghost btn-small" id="btn-login">Login</button>
+            <button type="button" class="btn-ghost btn-small" id="btn-logout">Logout</button>
+            </div>
+        
+            <p class="form-note" id="auth-status">No has iniciado sesión.</p>
+        </div>
+
+        <div class="demo-grid">
+            <!-- COLUMNA IZQUIERDA: PERFIL + TEST + MATCH -->
+            <div>
+                <!-- PERFIL COMPLETO Y VERIFICADO -->
+                <div class="demo-card">
+                    <h3>Tu perfil de roomie </h3>
+                    <form id="perfil-form">
+                        <div class="form-row">
+                            <div>
+                                <label for="nombre">Nombre</label>
+                                <input id="nombre" type="text" placeholder="Tu nombre" />
+                            </div>
+                            <div>
+                                <label for="pais">País de origen</label>
+                                <input id="pais" type="text" placeholder="Ej. México, Colombia..." />
+                            </div>
+                        </div>
+
+                        <div class="form-row" style="margin-top:0.8rem;">
+                            <div>
+                                <label for="ciudad">Ciudad donde estudiarás</label>
+                                <input id="ciudad" type="text" placeholder="Ej. Madrid, Barcelona..." />
+                            </div>
+                            <div>
+                                <label for="uni">Universidad</label>
+                                <input id="uni" type="text" placeholder="Ej. UEM, UPF..." />
+                            </div>
+                        </div>
+
+                        <div class="form-row" style="margin-top:0.8rem;">
+                            <div>
+                                <label for="presupuesto">Presupuesto mensual (alquiler)</label>
+                                <input id="presupuesto" type="number" placeholder="Ej. 450" />
+                            </div>
+                            <div>
+                                <label for="estilo">Estilo de vida</label>
+                                <select id="estilo">
+                                    <option value="">Selecciona una opción</option>
+                                    <option value="tranquilo">Tranquilo, poco ruido</option>
+                                    <option value="fiestero">Fiestero, social</option>
+                                    <option value="mixto">Depende del día</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:0.8rem;">
+                            <label for="hobbies">Intereses / hobbies</label>
+                            <input id="hobbies" type="text" placeholder="Gym, fútbol, videojuegos, cocinar..." />
+                        </div>
+
+                        <div style="margin-top:0.8rem;">
+                            <label for="descripcion">Cómo te describirías como roomie</label>
+                            <textarea id="descripcion" placeholder="Ordenado, respeto el espacio de los demás, no fumo..."></textarea>
+                        </div>
+
+                        <div style="margin-top:0.8rem;">
+                            <label>
+                                <input type="checkbox" id="verificado" checked />
+                                Perfil verificado 
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-primary" style="margin-top:1rem; width:100%;">
+                            Guardar perfil 
+                        </button>
+
+                        
+                        
+                    </form>
+
+                    <div class="perfil-preview">
+                        <div class="perfil-avatar" id="perfil-avatar">MR</div>
+                        <div>
+                            <div class="perfil-data-main">
+                                <strong id="perfil-nombre">Tu nombre</strong>
+                                <span style="font-size:0.78rem;">· <span id="perfil-ciudad">Ciudad</span></span>
+                            </div>
+                            <div style="font-size:0.78rem; color:var(--text-soft);">
+                                Presupuesto: <span id="perfil-presupuesto">--</span> €/mes ·
+                                Estilo: <span id="perfil-estilo">--</span>
+                            </div>
+                            <div id="perfil-verificado" class="perfil-verified" style="display:none;">
+                                <span>✓</span><span>Perfil verificado</span>
+                            </div>
+                            <div style="margin-top:0.3rem; font-size:0.78rem;" id="perfil-hobbies">
+                                Completa tu perfil para que otros roomies te conozcan.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TEST DE COMPATIBILIDAD -->
+                <div class="demo-card">
+                    <h3>Test de compatibilidad </h3>
+                    <form id="test-form">
+                        <div class="test-grid">
+                            <div>
+                                <label for="q1">Mañanas / Noches</label>
+                                <select id="q1">
+                                    <option value="3">Súper mañanero</option>
+                                    <option value="2">Mixto</option>
+                                    <option value="1">Más nocturno</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="q2">Nivel de orden</label>
+                                <select id="q2">
+                                    <option value="3">Muy ordenado</option>
+                                    <option value="2">Normal</option>
+                                    <option value="1">Caótico</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="q3">Visitas en casa</label>
+                                <select id="q3">
+                                    <option value="3">Casi nunca</option>
+                                    <option value="2">A veces</option>
+                                    <option value="1">Muy a menudo</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="q4">Tolerancia al ruido</label>
+                                <select id="q4">
+                                    <option value="3">Prefiero silencio</option>
+                                    <option value="2">Moderado</option>
+                                    <option value="1">No me molesta</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="q5">Compartir cosas</label>
+                                <select id="q5">
+                                    <option value="3">Compartir casi todo</option>
+                                    <option value="2">Algunas cosas</option>
+                                    <option value="1">Prefiero que no</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-ghost" style="margin-top:0.7rem;">
+                            Calcular compatibilidad
+                        </button>
+                        <div id="compat-resultado" class="compat-result"></div>
+                    </form>
+                </div>
+
+                <!-- FILTROS + MATCH + FAVORITOS -->
+                <div class="demo-card">
+                    <h3>Explorar roomies (filtros, match y favoritos)</h3>
+                    <div class="alert-soft" id="alert-favoritos"></div>
+
+                    <div class="filters-row">
+                        <div>
+                            <label for="f-ciudad">Ciudad</label>
+                            <select id="f-ciudad">
+                                <option value="">Cualquiera</option>
+                                <option value="Madrid">Madrid</option>
+                                <option value="Barcelona">Barcelona</option>
+                                <option value="Valencia">Valencia</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="f-presupuesto">Presupuesto máx.</label>
+                            <input id="f-presupuesto" type="number" placeholder="Ej. 600">
+                        </div>
+                        <div>
+                            <label for="f-estilo">Convivencia</label>
+                            <select id="f-estilo">
+                                <option value="">Cualquiera</option>
+                                <option value="Tranquil@">Tranquil@</option>
+                                <option value="Fiester@">Fiester@</option>
+                                <option value="Mixto">Mixto</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:0.4rem; margin-bottom:0.6rem;">
+                        <button type="button" class="btn-ghost btn-small" id="btn-filtrar">Aplicar filtros</button>
+                        <button type="button" class="btn-ghost btn-small" id="btn-ver-favs">Ver favoritos</button>
+                        <button type="button" class="btn-ghost btn-small" id="btn-ver-todos">Ver todos</button>
+                    </div>
+
+                    <div id="lista-roomies" class="roomies-grid"></div>
+                </div>
+            </div>
+
+            <!-- COLUMNA DERECHA: CHAT + RESEÑAS -->
+
+            
+
+            <div>
+                <!-- CHAT Y VIDEOLLAMADAS -->
+                <div class="demo-card">
+                    <h3>Chat y videollamadas </h3>
+                    <div class="chat-box">
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="chat-msg them">Hola 👋 Soy Ana, estudio en Madrid y busco piso cerca de Moncloa.</div>
+                            <div class="chat-msg me">¡Hola Ana! Yo también estudio por esa zona, ¿qué presupuesto tienes?</div>
+                        </div>
+                        <div class="chat-input-row">
+                            <input type="text" id="chat-input" placeholder="Escribe un mensaje..." />
+                            <button type="button" class="btn-primary btn-small" id="chat-enviar">Enviar</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-ghost btn-small" style="margin-top:0.6rem;" disabled>
+                        Iniciar videollamada 
+                    </button>
+                    
+                </div>
+
+                <!-- RESEÑAS Y REPUTACIÓN -->
+                <div class="demo-card">
+                    <h3>Reseñas y reputación</h3>
+                    <form id="resena-form">
+                        <div style="margin-bottom:0.5rem;">
+                            <label for="resena-nombre">Nombre del roommate / piso</label>
+                            <input id="resena-nombre" type="text" placeholder="Ej. Ana - Moncloa" />
+                        </div>
+                        <div style="margin-bottom:0.5rem;">
+                            <label>Valoración</label>
+                            <div class="rating-stars" id="rating-stars">
+                                <span data-score="1">★</span>
+                                <span data-score="2">★</span>
+                                <span data-score="3">★</span>
+                                <span data-score="4">★</span>
+                                <span data-score="5">★</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="resena-texto">Comentario</label>
+                            <textarea id="resena-texto" placeholder="Convivencia, limpieza, pagos, ruido..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-ghost" style="margin-top:0.6rem;">Guardar reseña </button>
+                    </form>
+                    <div class="reviews-list" id="lista-resenas"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <span>© <span id="year"></span> MatchRoom · Find your roomies.</span>
+        <span>Proyecto creado por y para estudiantes internacionales.</span>
+    </div>
+</footer>
+
+<script src="http://localhost:3001/socket.io/socket.io.js"></script>
+
+<script>
+    /* ================== CONFIG / AUTH ================== */
+    const API = "http://localhost:3001/api";
+    let TOKEN = localStorage.getItem("mr_token") || null;
+    
+    function authHeaders() {
+    return TOKEN ? { Authorization: "Bearer " + TOKEN } : {};
+    }
+    function setToken(t) {
+    TOKEN = t;
+    if (t) localStorage.setItem("mr_token", t);
+    else localStorage.removeItem("mr_token");
+    updateAuthStatus();
+    }
+    function updateAuthStatus() {
+    const el = document.getElementById("auth-status");
+    if (!el) return;
+    el.textContent = TOKEN ? "Sesión iniciada ✅" : "No has iniciado sesión.";
+    }
+    updateAuthStatus();
+    
+    /* ================== DOM: FOOTER ================== */
+    document.getElementById("year").textContent = new Date().getFullYear();
+    
+    /* ================== DOM: PERFIL INPUTS ================== */
+    const perfilForm = document.getElementById("perfil-form");
+    const nombre = document.getElementById("nombre");
+    const pais = document.getElementById("pais");
+    const ciudad = document.getElementById("ciudad");
+    const uni = document.getElementById("uni");
+    const presupuesto = document.getElementById("presupuesto");
+    const estilo = document.getElementById("estilo");
+    const hobbies = document.getElementById("hobbies");
+    const descripcion = document.getElementById("descripcion");
+    const verificado = document.getElementById("verificado");
+    
+    /* Preview perfil */
+    const perfilAvatar = document.getElementById("perfil-avatar");
+    const perfilNombre = document.getElementById("perfil-nombre");
+    const perfilCiudad = document.getElementById("perfil-ciudad");
+    const perfilPresupuesto = document.getElementById("perfil-presupuesto");
+    const perfilEstilo = document.getElementById("perfil-estilo");
+    const perfilHobbies = document.getElementById("perfil-hobbies");
+    const perfilVerificado = document.getElementById("perfil-verificado");
+    
+    /* ================== DOM: ROOMIES + FILTROS ================== */
+    const listaRoomies = document.getElementById("lista-roomies");
+    const alertFavs = document.getElementById("alert-favoritos");
+    
+    const fCiudad = document.getElementById("f-ciudad");
+    const fPresupuesto = document.getElementById("f-presupuesto");
+    const fEstilo = document.getElementById("f-estilo");
+    
+    const btnFiltrar = document.getElementById("btn-filtrar");
+    const btnVerFavs = document.getElementById("btn-ver-favs");
+    const btnVerTodos = document.getElementById("btn-ver-todos");
+    
+    /* ================== PERFIL: UI ================== */
+    function actualizarPreviewPerfil(p) {
+    perfilNombre.textContent = p.nombre || "Tu nombre";
+    perfilCiudad.textContent = p.ciudad || "Ciudad";
+    perfilPresupuesto.textContent = (p.presupuesto ?? "--");
+    perfilEstilo.textContent = p.estilo || "--";
+    
+    const iniciales = (p.nombre || "MR")
+        .split(" ")
+        .filter(Boolean)
+        .map(x => x[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase();
+    
+    perfilAvatar.textContent = iniciales || "MR";
+    perfilVerificado.style.display = p.verificado ? "inline-flex" : "none";
+    
+    perfilHobbies.textContent =
+        (p.hobbies || p.descripcion)
+        ? `${p.hobbies || ""}${p.descripcion ? " · " + p.descripcion : ""}`
+        : "Completa tu perfil para que otros roomies te conozcan.";
+    }
+    
+    /* ================== API: PERFIL (REAL) ================== */
+    async function guardarPerfilAPI(p) {
+    if (!TOKEN) throw new Error("Primero haz login.");
+    
+    const r = await fetch(`${API}/profile/me`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", ...authHeaders() },
+        body: JSON.stringify(p)
+    });
+    
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || "Error guardando perfil");
+    return j;
+    }
+    
+    async function cargarPerfilAPI() {
+    if (!TOKEN) return null;
+    
+    const r = await fetch(`${API}/profile/me`, { headers: { ...authHeaders() } });
+    const p = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(p.error || "Error cargando perfil");
+    
+    nombre.value = p.nombre || "";
+    pais.value = p.pais || "";
+    ciudad.value = p.ciudad || "";
+    uni.value = p.uni || "";
+    presupuesto.value = (p.presupuesto ?? "");
+    estilo.value = p.estilo || "";
+    hobbies.value = p.hobbies || "";
+    descripcion.value = p.descripcion || "";
+    verificado.checked = !!p.verificado;
+    
+    actualizarPreviewPerfil(p);
+    return p;
+    }
+    
+    /* ================== ROOMIES (API REAL) ================== */
+    let ROOMIES_API = [];
+    let FAVORITOS_API = [];
+    
+    async function cargarFavoritosAPI() {
+    if (!TOKEN) return;
+    const r = await fetch(`${API}/favorites`, { headers: { ...authHeaders() } });
+    FAVORITOS_API = await r.json().catch(() => []);
+    }
+    
+    async function cargarRoomiesAPI() {
+    if (!TOKEN || !listaRoomies) return;
+    
+    const params = new URLSearchParams();
+    if (fCiudad?.value) params.set("city", fCiudad.value);
+    if (fPresupuesto?.value) params.set("maxBudget", fPresupuesto.value);
+    if (fEstilo?.value) params.set("style", fEstilo.value);
+    
+    const r = await fetch(`${API}/roomies?` + params.toString(), {
+        headers: { ...authHeaders() }
+    });
+    
+    const data = await r.json().catch(() => []);
+    if (!r.ok) {
+        console.log("roomies error:", data);
+        ROOMIES_API = [];
+    } else {
+        ROOMIES_API = data;
+    }
+    renderRoomiesAPI();
+    }
+    
+    async function toggleFavoritoAPI(targetId) {
+    const isFav = FAVORITOS_API.includes(targetId);
+    
+    await fetch(`${API}/favorites/${targetId}`, {
+        method: isFav ? "DELETE" : "POST",
+        headers: { ...authHeaders() }
+    });
+    
+    await cargarFavoritosAPI();
+    renderRoomiesAPI();
+    }
+    
+    function renderRoomiesAPI() {
+    if (!listaRoomies) return;
+    listaRoomies.innerHTML = "";
+    
+    if (!ROOMIES_API.length) {
+        listaRoomies.innerHTML =
+        '<div style="font-size:0.8rem; color:var(--text-soft);">No hay resultados. (Tip: necesitas al menos 2 cuentas con perfil guardado)</div>';
+        return;
+    }
+    
+    ROOMIES_API.forEach(r => {
+        const card = document.createElement("article");
+        card.className = "roomie-card";
+    
+        const isFav = FAVORITOS_API.includes(r.user_id);
+    
+        card.innerHTML = `
+        <div class="roomie-top">
+            <div class="roomie-avatar">${(r.nombre || "R")[0].toUpperCase()}</div>
+            <div>
+            <div class="roomie-name">${r.nombre || "Sin nombre"}</div>
+            <div class="roomie-meta">${r.ciudad || "—"} · ${r.uni || "—"} · ${r.presupuesto ?? "—"} €/mes</div>
+            </div>
+            <div class="match-pill">${r.compat ?? 0}%</div>
+        </div>
+        <div style="font-size:0.8rem;">${r.descripcion || r.hobbies || "Perfil sin descripción."}</div>
+        <div class="fav-toggle ${isFav ? "favorited" : ""}">${isFav ? "★" : "☆"}</div>
+        `;
+    
+        card.querySelector(".fav-toggle").addEventListener("click", async (e) => {
+        e.stopPropagation();
+        await toggleFavoritoAPI(r.user_id);
+        if (alertFavs) {
+            alertFavs.textContent = isFav ? "Quitado de favoritos." : "Añadido a favoritos.";
+            alertFavs.style.display = "block";
+            setTimeout(() => (alertFavs.style.display = "none"), 1600);
+        }
+        });
+        const chatBtn = document.createElement("button");
+chatBtn.type = "button";
+chatBtn.className = "btn-ghost btn-small";
+chatBtn.style.marginTop = "0.6rem";
+chatBtn.textContent = "Chatear";
+chatBtn.addEventListener("click", () => abrirChatCon(r.user_id, r.nombre));
+card.appendChild(chatBtn);
+
+    
+        listaRoomies.appendChild(card);
+    });
+    }
+    
+    /* ================== LISTENERS: FILTROS ================== */
+    if (btnFiltrar) {
+    btnFiltrar.addEventListener("click", async () => {
+        await cargarFavoritosAPI();
+        await cargarRoomiesAPI();
+    });
+    }
+    if (btnVerTodos) {
+    btnVerTodos.addEventListener("click", async () => {
+        if (fCiudad) fCiudad.value = "";
+        if (fPresupuesto) fPresupuesto.value = "";
+        if (fEstilo) fEstilo.value = "";
+        await cargarFavoritosAPI();
+        await cargarRoomiesAPI();
+    });
+    }
+    if (btnVerFavs) {
+    btnVerFavs.addEventListener("click", async () => {
+        await cargarFavoritosAPI();
+        await cargarRoomiesAPI();
+        ROOMIES_API = ROOMIES_API.filter(r => FAVORITOS_API.includes(r.user_id));
+        renderRoomiesAPI();
+    });
+    }
+    
+    /* ================== PERFIL: SUBMIT (con await) ================== */
+    if (perfilForm) {
+    perfilForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!TOKEN) return alert("Primero haz login.");
+    
+        const p = {
+        nombre: nombre.value.trim(),
+        pais: pais.value.trim(),
+        ciudad: ciudad.value.trim(),
+        uni: uni.value.trim(),
+        presupuesto: presupuesto.value ? Number(presupuesto.value) : null,
+        estilo: estilo.value,
+        hobbies: hobbies.value.trim(),
+        descripcion: descripcion.value.trim(),
+        verificado: verificado.checked
+        };
+    
+        try {
+        await guardarPerfilAPI(p);
+        await cargarPerfilAPI();
+        await cargarFavoritosAPI();
+        await cargarRoomiesAPI();
+        alert("Perfil guardado en la base de datos ✅");
+        } catch (err) {
+        alert(err.message);
+        }
+    });
+    }
+    
+    /* ================== AUTH UI (Register/Login/Logout) ================== */
+    const btnRegister = document.getElementById("btn-register");
+    const btnLogin = document.getElementById("btn-login");
+    const btnLogout = document.getElementById("btn-logout");
+    
+    if (btnRegister) {
+    btnRegister.addEventListener("click", async () => {
+        const email = document.getElementById("auth-email").value.trim();
+        const password = document.getElementById("auth-pass").value.trim();
+        if (!email || !password) return alert("Pon email y password.");
+    
+        const r = await fetch(`${API}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+        });
+    
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) return alert(j.error || "No se pudo registrar.");
+        alert("Cuenta creada ✅ Ahora haz Login.");
+    });
+    }
+    
+    if (btnLogin) {
+    btnLogin.addEventListener("click", async () => {
+        const email = document.getElementById("auth-email").value.trim();
+        const password = document.getElementById("auth-pass").value.trim();
+        if (!email || !password) return alert("Pon email y password.");
+    
+        const r = await fetch(`${API}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+        });
+    
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) return alert(j.error || "Login incorrecto.");
+    
+        setToken(j.token);
+        connectSocket();
+    
+        // ✅ claves:
+        await cargarPerfilAPI().catch(() => {});
+        await cargarFavoritosAPI();
+        await cargarRoomiesAPI();
+    
+        alert("Login ✅");
+    });
+    }
+    
+    if (btnLogout) {
+    btnLogout.addEventListener("click", () => {
+        setToken(null);
+        if (listaRoomies) listaRoomies.innerHTML = "";
+        alert("Sesión cerrada.");
+    });
+    }
+    /* ================== TEST DE COMPATIBILIDAD ================== */
+const testForm = document.getElementById("test-form");
+const compatResultado = document.getElementById("compat-resultado");
+
+if (testForm) {
+testForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    let total = 0;
+    for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById("q" + i);
+    if (!el) continue;
+    total += Number(el.value);
+    }
+
+    const score = Math.round((total / 15) * 100);
+
+    let msg = "";
+    if (score >= 80) msg = "Ideal para convivir 🙌";
+    else if (score >= 60) msg = "Puede funcionar con buena comunicación 👍";
+    else msg = "Mejor buscar perfiles más parecidos 🧩";
+
+    compatResultado.textContent = `Compatibilidad ${score}% · ${msg}`;
+});
+}
+
+    /* ================== AUTO-CARGA si ya hay sesión ================== */
+    (async () => {
+if (!TOKEN) return;
+await cargarPerfilAPI().catch(() => {});
+await cargarFavoritosAPI();
+await cargarRoomiesAPI();
+  connectSocket();              // ✅ CONECTA CHAT AL CARGAR SI YA HAY TOKEN
+})();
+
+    
+
+
+    let socket = null;
+let CHAT_WITH = null;
+
+
+
+function connectSocket() {
+if (!TOKEN) return;
+
+  if (socket) socket.disconnect(); // ✅ evita duplicados
+
+socket = io("http://localhost:3001", {
+    auth: { token: TOKEN }
+});
+
+socket.on("connect", () => console.log("🟢 socket conectado"));
+socket.on("connect_error", (err) => console.log("🔴 socket error:", err.message));
+
+socket.on("dm:message", (msg) => {
+    if (!CHAT_WITH) return;
+    if (Number(msg.from) === Number(CHAT_WITH) || Number(msg.to) === Number(CHAT_WITH)) {
+    addMensaje(msg.text, Number(msg.from) === Number(CHAT_WITH) ? "them" : "me");
+    }
+});
+}
+
+function abrirChatCon(userId, nombre) {
+  if (!TOKEN) return alert("Primero haz login.");
+  if (!socket || !socket.connected) return alert("Socket no conectado aún. Espera 1s y prueba de nuevo.");
+
+  CHAT_WITH = Number(userId);
+  document.getElementById("chat-messages").innerHTML = "";
+  addMensaje(`Chat con ${nombre || "roomie"} ✅`, "them");
+
+  socket.emit("dm:join", { otherUserId: CHAT_WITH });
+}
+
+
+
+function addMensaje(text, quien) {
+const div = document.createElement("div");
+div.className = "chat-msg " + quien;
+div.textContent = text;
+document.getElementById("chat-messages").appendChild(div);
+}
+
+document.getElementById("chat-enviar").onclick = () => {
+  if (!TOKEN) return alert("Primero haz login.");
+  if (!socket || !socket.connected) return alert("Socket no conectado. Haz login otra vez.");
+  if (!CHAT_WITH) return alert("Primero pulsa 'Chatear' en un roomie.");
+
+  const input = document.getElementById("chat-input");
+  const text = input.value.trim();
+  if (!text) return;
+
+  socket.emit("dm:send", { to: CHAT_WITH, text });
+  addMensaje(text, "me");
+  input.value = "";
+};
+
+
+
+    </script>
+    
+    
+
+</body>
+</html>
